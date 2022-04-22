@@ -90,7 +90,9 @@ const Home = () => {
                         <Paper 
                             elevation={6}
                         >
-                            <Pagination/>
+                            <Pagination
+                                page={page}
+                            />
                         </Paper>
                     </Grid>
                 </Grid>

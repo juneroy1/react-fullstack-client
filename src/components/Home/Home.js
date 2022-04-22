@@ -4,7 +4,7 @@ import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import { useDispatch } from "react-redux";
 import { Container, Grow, Grid, Paper, AppBar, TextField, Button  } from '@material-ui/core'
-import {getPosts} from '../../actions/posts'
+import {getPosts, getPostBySearch} from '../../actions/posts'
 import { useHistory, useLocation } from "react-router-dom";
 import ChipInput from 'material-ui-chip-input';
 import Pagination from '../Pagination'
@@ -30,13 +30,17 @@ const Home = () => {
         dispatch(getPosts());
     }, [currentId, dispatch])
     const searchPost = () => {
-        if (search.trim()) {
+        if (search.trim() || tags) {
+            dispatch(getPostBySearch({search, tags: tags.join(',')}))
+            history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`)
             
+        }else{
+            history.push('/');
         }
     }
     const handleKeyPress = (e) => {
         if (e.keyCode == 13) {
-            
+            searchPost(); 
         }
     }
 
@@ -77,6 +81,7 @@ const Home = () => {
                                 onClick={searchPost}
                                 className={classes.searchButton}
                                 color="primary"
+                                variant="contained"
                             >Search</Button>
 
                         </AppBar>
